@@ -4,7 +4,9 @@ A very thin multibrowser-compatible abstraction for transforms and animations us
 
 ## Usage
 
-This package is not really supported yet and is mostly for internal use. Feature requests are welcome, but keep in mind that this is supposed to be LEAN. I will not be introducing any animation features. It is merely a thin abstraction layer to simplify dealing with the matrix.
+This package is not really documented yet and is mostly for internal use. Feature requests are welcome (but pull requests will more likely be acted upon) - keep in mind that this is supposed to be LEAN. I will not be introducing any animation features, for example. It is merely a thin-as-possible abstraction layer to simplify dealing with the transform matrix.
+
+Most of the functions only work for the X-Axis, because that's all we've needed so far. There are some exceptions to this, see `.setTranslate(x, y)` and `.setScale(x,y)`, under __API__ below.
 
 ```
 let myElement3d = css3d('.myelement');
@@ -17,7 +19,18 @@ for (let i=0; i<500; i++) {
 }
 ```
 
-### API
+If you want to work directly with the element's `.style` property, browser prefixes are also dealt with in a lean manner:
+
+```
+    myElement3d.style[css3d.transform] = "translate3d(0,50px,0)";
+```
+
+You can also `css3d.duration` (i.e. `transitionDuration`) and `css3d.easing` (i.e. `transitionTimingFunction`)
+
+Note: these are the prefixed versions, depending on current browser. It is a monofill, NOT a polyfill, per se. i.e. only one property will be set (again, better performance).
+
+
+## API
 
 - `getX()` -> Number
 - `setX()`
@@ -29,7 +42,7 @@ for (let i=0; i<500; i++) {
 
 This allows you to drag elements on the X axis in a very lean manner. This was mainly created because jQuery UI uses `style.left` for some ungodly reason. Here we use the transform matrix.
 
-Some simple callbacks are provided (`onStart`, `onEnd`, `onUpdate`).
+Some simple callbacks are provided (`onStart`, `onEnd`, `onUpdate`). It's ok not to set these callbacks.
 
 ```
 myElement3d.SimpleDrag({
@@ -51,9 +64,10 @@ myElement3d.SimpleDrag({
 });
 ```
 
+
 ## SimpleResize
 
-This allows you to resize elements on the X axis, including using two fingers. At the moment there are no callbacks, because we don't need them in our implementation (we just resize and look afterwards how big the element is):
+This allows you to resize elements on the X axis, including resizing both edges at once using two fingers. At the moment there are no callbacks, because we don't need them in our implementation (we just resize and look afterwards how big the element is):
 
 ```
 myElement3d.SimpleResize({
