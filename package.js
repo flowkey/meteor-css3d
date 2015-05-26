@@ -14,7 +14,7 @@ Package.onUse(function(api) {
   api.versionsFrom('1.1.0.2');
   api.addFiles([
     'css3d.js',
-    'css3d-resizable.js',
+    'css3d-simple-resize.js',
     'css3d-simple-drag.js'
   ], 'client');
 

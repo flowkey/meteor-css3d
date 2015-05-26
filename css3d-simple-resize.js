@@ -1,14 +1,14 @@
 'use strict';
 
-css3d.prototype.Resizable = function (options) {
+css3d.prototype.SimpleResize = function (options) {
     _.defaults(options, {resizable3d: this});
     
     if (this.resizer) this.resizer.destroy();
-    this.resizer = new Resizable(options);
+    this.resizer = new SimpleResize(options);
 };
 
 
-var Resizable = function (options) {
+var SimpleResize = function (options) {
     
     _.extend(this, options);
     
@@ -33,7 +33,7 @@ var Resizable = function (options) {
 }
 
 
-_.extend(Resizable.prototype, {
+_.extend(SimpleResize.prototype, {
     tap: function (e) {
         
         this.resizable3d.style[css3d.duration] = 0;
@@ -134,7 +134,6 @@ _.extend(Resizable.prototype, {
 
         if (typeof window.ontouchstart !== 'undefined') {
             if (e.targetTouches && e.targetTouches.length < 2) {
-                console.log("release pinch handler");
                 window.removeEventListener('touchmove', this.pinch);
             }
             window.removeEventListener('touchmove', this.drag);
