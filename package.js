@@ -19,6 +19,6 @@ Package.onUse(function(api) {
 
 Package.onTest(function(api) {
   api.use('tinytest');
-  api.use('css3d');
+  api.use('ephemer:css3d');
   api.addFiles('css3d-tests.js');
 });
