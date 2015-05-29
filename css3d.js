@@ -70,6 +70,13 @@ _.extend(css3d.prototype, {
 	getX: function () {
 		return this.getMatrix()[4];
 	},
+	getTranslate: function () {
+		return this.getX();
+	},
+	getRotation: function () {
+		var rotation = this.el.style[css3d.transform].match(/(rotate\w\()(-?\d+\.?\d+)(deg\))/);
+		return rotation && rotation[2] || 0;
+	},
 	setMatrix: function (matrix) {
 		this.overrideMatrix(matrix);
 		this.style[css3d.transform] = "matrix(" + this.matrix.join(',') + ")";
@@ -77,6 +84,10 @@ _.extend(css3d.prototype, {
 	setTranslate: function (x, y) {
 		if (x === undefined) x = 0; if (y === undefined) y = 0;
 		this.style[css3d.transform] = "matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, " + x + ", " + y + ", 0, 1)";
+	},
+	setRotation: function (degrees) {
+		degrees = degrees || 0;
+		this.style[css3d.transform] = "rotateZ(" + degrees + "deg)";
 	},
 	setScale: function (x, y) {
 		if (x === undefined) x = 1; if (y === undefined) y = 1;
