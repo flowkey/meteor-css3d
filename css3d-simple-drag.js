@@ -58,7 +58,7 @@ _.extend(SimpleDrag.prototype, {
         this.offset = e.synthetic ? this.reference : this.movable3d['get' + this.animatedProperty]();
 
         if (typeof window.ontouchstart !== 'undefined') {
-            if (e.targetTouches.length && e.targetTouches.length > 1) {
+            if (e.targetTouches && e.targetTouches.length > 1) {
                 // disable drag with two or more fingers
                 // this allows us to resize and do other things
                 this.killEventHandlers();
@@ -82,11 +82,8 @@ _.extend(SimpleDrag.prototype, {
     },
 
     drag: function(e) {
-        var x;
-        var delta;
-
-        x = this.xpos(e);
-        delta = (this.reference - x) * this.multiplier;
+        var x = this.xpos(e);
+        var delta = (this.reference - x) * this.multiplier;
 
         if (!this.dragging && Math.abs(delta) > 1) {
             // Make it easier to just "click" (not drag) a draggable
@@ -101,8 +98,6 @@ _.extend(SimpleDrag.prototype, {
             this.scroll(this.offset - delta);
         }
 
-        // return false;
-        // e.stopPropagation();
         e.preventDefault();
     },
 
