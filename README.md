@@ -75,3 +75,7 @@ myElement3d.SimpleResize({
     max: 500,
 });
 ```
+
+##Changelog
+
+- 0.0.8: Allow cleanup via myCssElInstance3d.destroy(). This will kill all listeners and element references to avoid memory leaks.

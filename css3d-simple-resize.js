@@ -5,6 +5,7 @@ css3d.prototype.SimpleResize = function(options) {
 
     if (this.resizer) this.resizer.destroy();
     this.resizer = new SimpleResize(options);
+    this._registeredListeners.push('resizer');
 };
 
 var SimpleResize = function(options) {
@@ -171,6 +172,7 @@ _.extend(SimpleResize.prototype, {
         }
 
         this.resizable3d.el.removeEventListener('mousedown', this.tap);
+        this.resizable3d = this.tap = this.drag = this.pinch = this.release = null;
     }
 });
 

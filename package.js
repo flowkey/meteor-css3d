@@ -1,6 +1,6 @@
 Package.describe({
   name: 'ephemer:css3d',
-  version: '0.0.7',
+  version: '0.0.8',
   summary: 'Thin & performant abstraction for transforming, dragging, and resizing elements using CSS3 matrices',
   git: 'https://github.com/ephemer/meteor-css3d.git',
   documentation: 'README.md'

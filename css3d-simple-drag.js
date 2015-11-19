@@ -9,8 +9,9 @@ css3d.prototype.SimpleDrag = function(options) {
 
     _.defaults(options, {movable3d: this});
 
-    if (this.draggable) this.draggable.destroy();
-    this.draggable = new SimpleDrag(options);
+    if (this.dragger) this.dragger.destroy();
+    this.dragger = new SimpleDrag(options);
+    this._registeredListeners.push('dragger');
 };
 
 var SimpleDrag = function(options) {
@@ -162,11 +163,21 @@ _.extend(SimpleDrag.prototype, {
     },
 
     destroy: function() {
+        this.killEventHandlers();
+
         if (typeof window.ontouchstart !== 'undefined') {
             this.movable3d.el.removeEventListener('touchstart', this.tap);
         }
 
         this.movable3d.el.removeEventListener('mousedown', this.tap);
         this.movable3d.el.removeEventListener('click', this.preventClickEvent);
+
+        this.movable3d =
+        this.tap =
+        this.drag =
+        this.release =
+        this.onEnd =
+        this.onStart =
+        this.onUpdate = null;
     }
 });

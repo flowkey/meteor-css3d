@@ -44,6 +44,16 @@ var makeObjFromMatrix = function (args) {
 }
 
 _.extend(css3d.prototype, {
+	_registeredListeners: [],
+	destroy: function() {
+		this._registeredListeners.forEach(function(listenerName) {
+			if (this[listenerName]) this[listenerName].destroy();
+		});
+		
+		this.style = null;
+		this.$el = null;
+		this.el = null;
+	},
 	getString: function () {
 		return window.getComputedStyle(this.el)[css3d.transform];
 	},
