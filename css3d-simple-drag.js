@@ -9,7 +9,7 @@ css3d.prototype.SimpleDrag = function(options) {
 
     _.defaults(options, {movable3d: this});
 
-    if (this.dragger) this.dragger.destroy();
+    if (this.dragger && this.dragger.movable3d) this.dragger.destroy();
     this.dragger = new SimpleDrag(options);
     this._registeredListeners.push('dragger');
 };

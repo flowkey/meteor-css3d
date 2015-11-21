@@ -3,7 +3,7 @@
 css3d.prototype.SimpleResize = function(options) {
     _.defaults(options, {resizable3d: this});
 
-    if (this.resizer) this.resizer.destroy();
+    if (this.resizer && this.resizer.resizable3d) this.resizer.destroy();
     this.resizer = new SimpleResize(options);
     this._registeredListeners.push('resizer');
 };
@@ -84,6 +84,7 @@ _.extend(SimpleResize.prototype, {
 
     drag: function(e) {
         var x, delta;
+
         // 'x' & 'reference' are in the window space (clientX)
         x = this.xpos(e);
         delta = this.reference0 - x;
@@ -99,6 +100,7 @@ _.extend(SimpleResize.prototype, {
 
         // e.stopPropagation();
         e.preventDefault();
+
         // return false;
     },
 
@@ -135,9 +137,11 @@ _.extend(SimpleResize.prototype, {
             if (e.touches && e.touches.length < 2) {
                 window.removeEventListener('touchmove', this.pinch);
             }
+
             window.removeEventListener('touchmove', this.drag);
             window.removeEventListener('touchend', this.release);
         }
+
         window.removeEventListener('mousemove', this.drag);
         window.removeEventListener('mouseup', this.release);
 
@@ -172,6 +176,7 @@ _.extend(SimpleResize.prototype, {
         }
 
         this.resizable3d.el.removeEventListener('mousedown', this.tap);
+
         this.resizable3d = this.tap = this.drag = this.pinch = this.release = null;
     }
 });
