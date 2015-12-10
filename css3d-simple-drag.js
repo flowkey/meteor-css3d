@@ -150,6 +150,7 @@ _.extend(SimpleDrag.prototype, {
 
             // But bring it back once the event loop clears:
             setTimeout(function() {
+                if (!self.movable3d.el) return;
                 self.movable3d.el.addEventListener('click', self.preventClickEvent);
             }, 0);
         }
