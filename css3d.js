@@ -33,6 +33,7 @@ css3d.check = function (properties) {
 	}
 }
 
+css3d.delay = css3d.check(["transitionDelay", "webkitTransitionDelay"]);
 css3d.transform = css3d.check(["transform", "webkitTransform", "msTransform"]);
 css3d.duration = css3d.check(["transitionDuration", "webkitTransitionDuration"]);
 css3d.easing = css3d.check(["transitionTimingFunction", "webkitTransitionTimingFunction"]);
