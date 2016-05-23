@@ -47,8 +47,11 @@ var makeObjFromMatrix = function (args) {
 _.extend(css3d.prototype, {
 	_registeredListeners: [],
 	destroy: function() {
-		this._registeredListeners.forEach(function(listenerName) {
-			if (this[listenerName]) this[listenerName].destroy();
+		this._registeredListeners.forEach((listenerName) => {
+			if (this[listenerName]) {
+				this[listenerName].destroy();
+				this[listenerName] = null;
+			}
 		});
 		
 		this.style = null;
