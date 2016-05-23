@@ -8,6 +8,7 @@ Package.describe({
 
 Package.onUse(function(api) {
   api.versionsFrom('1.1.0.2');
+  api.use('ecmascript');
   api.use('underscore');
 
   api.addFiles([
