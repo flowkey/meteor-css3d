@@ -17,7 +17,7 @@ css3d = function (selector) {
 	if (this.el) {
 		this.style = this.el.style;
 	} else {
-		flow.log(2, "%c" + "css3d: '" + selector + "' could not be found", "font-size: larger");
+		throw new Error(`css3d: ${selector} could not be found", "font-size: larger`);
 	}
 
 	this.getMatrix(); // set an initial value for the matrix
