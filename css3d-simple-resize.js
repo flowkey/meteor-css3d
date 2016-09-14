@@ -1,14 +1,14 @@
 'use strict';
 
-css3d.prototype.SimpleResize = function(options) {
-    _.defaults(options, {resizable3d: this});
+css3d.prototype.SimpleResize = function (options) {
+    _.defaults(options, { resizable3d: this });
 
     if (this.resizer && this.resizer.resizable3d) this.resizer.destroy();
     this.resizer = new SimpleResize(options);
     this._registeredListeners.push('resizer');
 };
 
-var SimpleResize = function(options) {
+var SimpleResize = function (options) {
 
     _.extend(this, options);
 
@@ -31,10 +31,10 @@ var SimpleResize = function(options) {
     }
 
     this.resizable3d.el.addEventListener('mousedown', this.tap);
-}
+};
 
 _.extend(SimpleResize.prototype, {
-    tap: function(e) {
+    tap: function (e) {
 
         this.resizable3d.style[css3d.duration] = 0;
 
@@ -82,7 +82,7 @@ _.extend(SimpleResize.prototype, {
         return false;
     },
 
-    drag: function(e) {
+    drag: function (e) {
         var x, delta;
 
         // 'x' & 'reference' are in the window space (clientX)
@@ -104,7 +104,7 @@ _.extend(SimpleResize.prototype, {
         // return false;
     },
 
-    pinch: function(e) {
+    pinch: function (e) {
         // We get here when we're __touching__ with >= 2 fingers
         this.offsetX[0] = getTouchPoint(e, 0);
         this.offsetX[1] = getTouchPoint(e, 1);
@@ -115,7 +115,7 @@ _.extend(SimpleResize.prototype, {
         e.preventDefault();
     },
 
-    resize: function() {
+    resize: function () {
         // We get here when dragging one(!) of the loop handles
         // (example) this.offsetX === [-5, 395];
         var leftAnchor = Math.min(this.offsetX[0], this.offsetX[1]) + this.rootOffset;
@@ -129,7 +129,7 @@ _.extend(SimpleResize.prototype, {
         this.resizable3d.style.width = width;
     },
 
-    release: function(e) {
+    release: function (e) {
         this.resizable3d.style[css3d.duration] = null;
         this.resizable3d.el.classList.remove('resizing');
 
@@ -149,7 +149,7 @@ _.extend(SimpleResize.prototype, {
         e.preventDefault();
     },
 
-    xOffset: function(e, finger) {
+    xOffset: function (e, finger) {
         // touch event
         if (e.touches && e.touches.length >= 1) {
             return e.touches[finger || 0].pageX - this.resizable3d.el.getBoundingClientRect().left;
@@ -160,7 +160,7 @@ _.extend(SimpleResize.prototype, {
         return e.offsetX || e.pageX - this.resizable3d.el.getBoundingClientRect().left;
     },
 
-    xpos: function(e) {
+    xpos: function (e) {
         // touch event
         if (e.touches && e.touches.length >= 1) {
             return e.touches[0].clientX;
@@ -170,7 +170,7 @@ _.extend(SimpleResize.prototype, {
         return e.clientX;
     },
 
-    destroy: function() {
+    destroy: function () {
         if (typeof window.ontouchstart !== 'undefined') {
             this.resizable3d.el.removeEventListener('touchstart', this.tap);
         }
@@ -178,7 +178,7 @@ _.extend(SimpleResize.prototype, {
         this.resizable3d.el.removeEventListener('mousedown', this.tap);
 
         this.resizable3d = this.tap = this.drag = this.pinch = this.release = null;
-    }
+    },
 });
 
 // touch point 0 is the left-most touch point

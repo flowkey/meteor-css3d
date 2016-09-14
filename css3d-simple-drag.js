@@ -1,20 +1,20 @@
 'use strict';
 
-css3d.prototype.SimpleDrag = function(options) {
+css3d.prototype.SimpleDrag = function (options) {
     // Clone options to avoid changing object input by calling function.
     // This ensures no references to dead DOM elements are retained.
     // Also prevents SimpleDrag getting "stuck" with dead DOM els:
     if (_.isObject(options)) options = _.clone(options);
     else options = {};
 
-    _.defaults(options, {movable3d: this});
+    _.defaults(options, { movable3d: this });
 
     if (this.dragger && this.dragger.movable3d) this.dragger.destroy();
     this.dragger = new SimpleDrag(options);
     this._registeredListeners.push('dragger');
 };
 
-var SimpleDrag = function(options) {
+var SimpleDrag = function (options) {
 
     _.extend(this, options);
 
@@ -35,9 +35,9 @@ var SimpleDrag = function(options) {
     this.multiplier = this.multiplier || 1;
 
     // Callbacks when something happens
-    this.onEnd = (this.onEnd || function() {}).bind(this);
-    this.onStart = (this.onStart || function() {}).bind(this);
-    this.onUpdate = (this.onUpdate || function() {}).bind(this);
+    this.onEnd = (this.onEnd || function () {}).bind(this);
+    this.onStart = (this.onStart || function () {}).bind(this);
+    this.onUpdate = (this.onUpdate || function () {}).bind(this);
 
     // Set up the click handlers (without these nothing happens)
     if (typeof window.ontouchstart !== 'undefined') {
@@ -46,10 +46,10 @@ var SimpleDrag = function(options) {
 
     this.movable3d.el.addEventListener('mousedown', this.tap);
     this.movable3d.el.addEventListener('click', this.preventClickEvent);
-}
+};
 
 _.extend(SimpleDrag.prototype, {
-    tap: function(e) {
+    tap: function (e) {
 
         this.movable3d.style[css3d.duration] = 0;
 
@@ -82,7 +82,7 @@ _.extend(SimpleDrag.prototype, {
         e.preventDefault();
     },
 
-    drag: function(e) {
+    drag: function (e) {
         var x = this.xpos(e);
         var delta = (this.reference - x) * this.multiplier;
 
@@ -102,7 +102,7 @@ _.extend(SimpleDrag.prototype, {
         e.preventDefault();
     },
 
-    killEventHandlers: function() {
+    killEventHandlers: function () {
         if (typeof window.ontouchstart !== 'undefined') {
             window.removeEventListener('touchmove', this.drag);
             window.removeEventListener('touchend', this.release);
@@ -112,7 +112,7 @@ _.extend(SimpleDrag.prototype, {
         window.removeEventListener('mouseup', this.release);
     },
 
-    release: function(e) {
+    release: function (e) {
         this.killEventHandlers();
         this.allowClickUnlessActuallyDragging();
         this.onEnd(this.offset, this.max);
@@ -125,7 +125,7 @@ _.extend(SimpleDrag.prototype, {
         return false;
     },
 
-    xpos: function(e) {
+    xpos: function (e) {
         // touch event
         if (e.touches && (e.touches.length >= 1)) {
             return e.touches[0].clientX;
@@ -135,13 +135,13 @@ _.extend(SimpleDrag.prototype, {
         return e.clientX;
     },
 
-    scroll: function(x) {
+    scroll: function (x) {
         this.offset = (x < this.min) ? this.min : (x > this.max) ? this.max : x;
         this.movable3d['set' + this.animatedProperty](this.offset);
         this.onUpdate(this.offset, this.max);
     },
 
-    allowClickUnlessActuallyDragging: function() {
+    allowClickUnlessActuallyDragging: function () {
         // If we just clicked (instead of dragging),
         // REMOVE our internal event listener that kills the event propagation.
         var self = this;
@@ -149,21 +149,21 @@ _.extend(SimpleDrag.prototype, {
             self.movable3d.el.removeEventListener('click', self.preventClickEvent);
 
             // But bring it back once the event loop clears:
-            setTimeout(function() {
+            setTimeout(function () {
                 if (!self.movable3d.el) return;
                 self.movable3d.el.addEventListener('click', self.preventClickEvent);
             }, 0);
         }
     },
 
-    preventClickEvent: function(e) {
+    preventClickEvent: function (e) {
         e.stopPropagation();
         e.stopImmediatePropagation();
         e.preventDefault();
         return false;
     },
 
-    destroy: function() {
+    destroy: function () {
         this.killEventHandlers();
 
         if (typeof window.ontouchstart !== 'undefined') {
@@ -180,5 +180,5 @@ _.extend(SimpleDrag.prototype, {
         this.onEnd =
         this.onStart =
         this.onUpdate = null;
-    }
+    },
 });
