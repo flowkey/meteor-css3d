@@ -36,7 +36,7 @@ var SimpleResize = function (options) {
 _.extend(SimpleResize.prototype, {
     tap: function (e) {
 
-        if (e.srcElement !== this.resizable3d.el) {
+        if (e.target !== this.resizable3d.el) {
             return;
         }
 
