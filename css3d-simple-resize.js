@@ -36,6 +36,10 @@ var SimpleResize = function (options) {
 _.extend(SimpleResize.prototype, {
     tap: function (e) {
 
+        if (e.target !== this.resizable3d.el) {
+            return;
+        }
+
         this.resizable3d.style[css3d.duration] = 0;
 
         this.resizing = false;
