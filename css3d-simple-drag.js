@@ -40,7 +40,7 @@ var SimpleDrag = function (options) {
     this.onUpdate = (this.onUpdate || function () {}).bind(this);
 
     // Set up the click handlers (without these nothing happens)
-    if (typeof window.ontouchstart !== 'undefined') {
+    if (css3d.touchIsSupported) {
         this.movable3d.el.addEventListener('touchstart', this.tap);
     }
 
@@ -58,7 +58,7 @@ _.extend(SimpleDrag.prototype, {
 
         this.offset = e.synthetic ? this.reference : this.movable3d['get' + this.animatedProperty]();
 
-        if (typeof window.ontouchstart !== 'undefined') {
+        if (css3d.touchIsSupported) {
             if (e.touches && e.touches.length > 1) {
                 // disable drag with two or more fingers
                 // this allows us to resize and do other things
@@ -103,7 +103,7 @@ _.extend(SimpleDrag.prototype, {
     },
 
     killEventHandlers: function () {
-        if (typeof window.ontouchstart !== 'undefined') {
+        if (css3d.touchIsSupported) {
             window.removeEventListener('touchmove', this.drag);
             window.removeEventListener('touchend', this.release);
         }
@@ -166,7 +166,7 @@ _.extend(SimpleDrag.prototype, {
     destroy: function () {
         this.killEventHandlers();
 
-        if (typeof window.ontouchstart !== 'undefined') {
+        if (css3d.touchIsSupported) {
             this.movable3d.el.removeEventListener('touchstart', this.tap);
         }
 

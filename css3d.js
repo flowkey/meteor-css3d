@@ -23,6 +23,7 @@ css3d = function (selector) {
     this.getMatrix(); // set an initial value for the matrix
 };
 
+css3d.touchIsSupported = typeof window.TouchEvent !== "undefined";
 css3d.originMatrix = [1, 0, 0, 1, 0, 0];
 css3d.matrixRegex = new RegExp(/-?\d+\.?\d*/g);
 css3d.check = function (properties) {
