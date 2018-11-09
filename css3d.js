@@ -23,7 +23,16 @@ css3d = function (selector) {
     this.getMatrix(); // set an initial value for the matrix
 };
 
+/*
+ * As of November 2018, all relevant mobile browser 
+ * (chrome, firefox, safari, opera) should define window.TouchEvent
+ * Desktop browsers generally don't, but they interprete touches as mouse events.
+ * The only Desktop Browser to define window.TouchEvent is Chrome,
+ * but it does not interprete mouse clicks as touches in turn.
+ * see https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent
+ */
 css3d.touchIsSupported = typeof window.TouchEvent !== "undefined";
+
 css3d.originMatrix = [1, 0, 0, 1, 0, 0];
 css3d.matrixRegex = new RegExp(/-?\d+\.?\d*/g);
 css3d.check = function (properties) {
