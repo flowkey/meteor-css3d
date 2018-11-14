@@ -26,7 +26,7 @@ var SimpleResize = function (options) {
 
     // It's important to have both events:
     // e.g. MS Surface supports both depending on touch or stylus click
-    if (typeof window.ontouchstart !== 'undefined') {
+    if (css3d.touchIsSupported) {
         this.resizable3d.el.addEventListener('touchstart', this.tap);
     }
 
@@ -72,7 +72,7 @@ _.extend(SimpleResize.prototype, {
 
         this.resizable3d.el.classList.add('resizing');
 
-        if (typeof window.ontouchstart !== 'undefined') {
+        if (css3d.touchIsSupported) {
             window.addEventListener('touchmove', this.drag);
             window.addEventListener('touchend', this.release);
         }
@@ -137,7 +137,7 @@ _.extend(SimpleResize.prototype, {
         this.resizable3d.style[css3d.duration] = null;
         this.resizable3d.el.classList.remove('resizing');
 
-        if (typeof window.ontouchstart !== 'undefined') {
+        if (css3d.touchIsSupported) {
             if (e.touches && e.touches.length < 2) {
                 window.removeEventListener('touchmove', this.pinch);
             }
@@ -175,7 +175,7 @@ _.extend(SimpleResize.prototype, {
     },
 
     destroy: function () {
-        if (typeof window.ontouchstart !== 'undefined') {
+        if (css3d.touchIsSupported) {
             this.resizable3d.el.removeEventListener('touchstart', this.tap);
         }
 
