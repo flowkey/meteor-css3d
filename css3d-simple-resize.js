@@ -174,7 +174,20 @@ _.extend(SimpleResize.prototype, {
         return e.clientX;
     },
 
+    killEventHandlers: function () {
+        if (css3d.touchIsSupported) {
+            window.removeEventListener('touchmove', this.drag);
+            window.removeEventListener('touchmove', this.pinch);
+            window.removeEventListener('touchend', this.release);
+        }
+
+        window.removeEventListener('mousemove', this.drag);
+        window.removeEventListener('mouseup', this.release);
+    },
+
     destroy: function () {
+        this.killEventHandlers();
+
         if (css3d.touchIsSupported) {
             this.resizable3d.el.removeEventListener('touchstart', this.tap);
         }
