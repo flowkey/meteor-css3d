@@ -1,4 +1,4 @@
-css3d = function (selector) {
+css3d = function(selector) {
     if (!(this instanceof css3d)) return new css3d(selector);
 
     if (selector instanceof $) {
@@ -11,7 +11,9 @@ css3d = function (selector) {
         this.$el = $(selector);
         this.el = this.$el[0];
     } else {
-        throw new Error('You must provide a jQuery object, HTML element, or string containing a (jQuery compatible) CSS selector');
+        throw new Error(
+            "You must provide a jQuery object, HTML element, or string containing a (jQuery compatible) CSS selector"
+        );
     }
 
     if (this.el) {
@@ -24,7 +26,7 @@ css3d = function (selector) {
 };
 
 /*
- * As of November 2018, all relevant mobile browser 
+ * As of November 2018, all relevant mobile browser
  * (chrome, firefox, safari, opera) should define window.TouchEvent
  * Desktop browsers generally don't, but they interprete touches as mouse events.
  * The only Desktop Browser to define window.TouchEvent is Chrome,
@@ -35,29 +37,31 @@ css3d.touchIsSupported = typeof window.TouchEvent !== "undefined";
 
 css3d.originMatrix = [1, 0, 0, 1, 0, 0];
 css3d.matrixRegex = new RegExp(/-?\d+\.?\d*/g);
-css3d.check = function (properties) {
+css3d.check = function(properties) {
     // feature discovery given an array of potential style prefixes
     var root = document.documentElement;
     for (var i = 0; i < properties.length; i++) {
-        if (properties[i] in root.style) { return properties[i]; }
+        if (properties[i] in root.style) {
+            return properties[i];
+        }
     }
 };
 
-css3d.delay = css3d.check(['transitionDelay', 'webkitTransitionDelay']);
-css3d.transform = css3d.check(['transform', 'webkitTransform', 'msTransform']);
-css3d.duration = css3d.check(['transitionDuration', 'webkitTransitionDuration']);
-css3d.easing = css3d.check(['transitionTimingFunction', 'webkitTransitionTimingFunction']);
+css3d.delay = css3d.check(["transitionDelay", "webkitTransitionDelay"]);
+css3d.transform = css3d.check(["transform", "webkitTransform", "msTransform"]);
+css3d.duration = css3d.check(["transitionDuration", "webkitTransitionDuration"]);
+css3d.easing = css3d.check(["transitionTimingFunction", "webkitTransitionTimingFunction"]);
 
-var makeObjFromMatrix = function (args) {
+var makeObjFromMatrix = function(args) {
     if (_.isObject(args) && !_.isArray(args)) return args;
     var args = _.isArray(args) ? args : _.toArray(arguments);
-    return _.object(['scaleX', undefined, undefined, 'scaleY', 'x', 'y'], args); // undefined are unused
+    return _.object(["scaleX", undefined, undefined, "scaleY", "x", "y"], args); // undefined are unused
 };
 
 _.extend(css3d.prototype, {
     _registeredListeners: [],
-    destroy: function () {
-        this._registeredListeners.forEach((listenerName) => {
+    destroy: function() {
+        this._registeredListeners.forEach(listenerName => {
             if (this[listenerName]) {
                 this[listenerName].destroy();
                 this[listenerName] = null;
@@ -69,11 +73,11 @@ _.extend(css3d.prototype, {
         this.el = null;
     },
 
-    getString: function () {
+    getString: function() {
         return window.getComputedStyle(this.el)[css3d.transform];
     },
 
-    getMatrix: function () {
+    getMatrix: function() {
         var array = this.getString().match(css3d.matrixRegex);
 
         if (!array || array.length !== 6) {
@@ -82,61 +86,65 @@ _.extend(css3d.prototype, {
             array = css3d.originMatrix.slice(0); // make a copy
         }
 
-        return this.matrix = array.map(function (value) {
+        return (this.matrix = array.map(function(value) {
             return value * 1; // co-erce value into a number
-        });
+        }));
     },
 
-    get: function () {
+    get: function() {
         // Return coordinates x, y, z etc.
         return makeObjFromMatrix(this.getMatrix());
     },
 
-    getScaleX: function () {
+    getScaleX: function() {
         return this.getMatrix()[0];
     },
 
-    getX: function () {
+    getX: function() {
         return this.getMatrix()[4];
     },
 
-    getTranslate: function () {
+    getTranslate: function() {
         return this.getX();
     },
 
-    getRotation: function () {
+    getRotation: function() {
         var rotation = this.el.style[css3d.transform].match(/(rotate\w\()(-?\d+\.?\d+)(deg\))/);
-        return rotation && rotation[2] || 0;
+        return (rotation && rotation[2]) || 0;
     },
 
-    setMatrix: function (matrix) {
+    setMatrix: function(matrix) {
         this.overrideMatrix(matrix);
-        this.style[css3d.transform] = 'matrix(' + this.matrix.join(',') + ')';
+        this.style[css3d.transform] = "matrix(" + this.matrix.join(",") + ")";
     },
 
-    setTranslate: function (x, y) {
-        if (x === undefined) x = 0; if (y === undefined) y = 0;
-        this.style[css3d.transform] = 'matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, ' + x + ', ' + y + ', 0, 1)';
+    setTranslate: function(x, y) {
+        if (x === undefined) x = 0;
+        if (y === undefined) y = 0;
+        this.style[css3d.transform] =
+            "matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, " + x + ", " + y + ", 0, 1)";
     },
 
-    setRotation: function (degrees) {
+    setRotation: function(degrees) {
         degrees = degrees || 0;
-        this.style[css3d.transform] = 'rotateZ(' + degrees + 'deg)';
+        this.style[css3d.transform] = "rotateZ(" + degrees + "deg)";
     },
 
-    setScale: function (x, y) {
-        if (x === undefined) x = 1; if (y === undefined) y = 1;
-        this.style[css3d.transform] = 'matrix3d(' + x + ', 0, 0, 0, 0, ' + y + ', 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)';
+    setScale: function(x, y) {
+        if (x === undefined) x = 1;
+        if (y === undefined) y = 1;
+        this.style[css3d.transform] =
+            "matrix3d(" + x + ", 0, 0, 0, 0, " + y + ", 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)";
     },
 
-    overrideMatrix: function () {
+    overrideMatrix: (function() {
         var j; // outside the scope of garbage colleciton
-        return function (newM) {
+        return function(newM) {
             if (!newM || newM.length < 6) return this.getMatrix();
             j = newM.length;
             while (j--) {
                 if (newM[j] !== undefined) this.matrix[j] = newM[j];
             }
         };
-    }(), // make a closure on start
+    })(), // make a closure on start
 });
