@@ -1,4 +1,5 @@
-import { $ } from "meteor/jquery";
+// THIS IMPORT SOMEHOW BREAKS THE LOADING ORDER OF velocity.js
+// import { $ } from "meteor/jquery";
 
 css3d = function(selector) {
     if (!(this instanceof css3d)) return new css3d(selector);
