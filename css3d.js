@@ -77,7 +77,23 @@ _.extend(css3d.prototype, {
     },
 
     getString: function() {
-        return window.getComputedStyle(this.el)[css3d.transform];
+        const computedStyles = window.getComputedStyle(this.el);
+        const originalDisplayValue = computedStyles.display;
+
+        // Sometimes the element can be invisible by having the `display` style set to "none"
+        // In this case the `transform` style can not be computed but will simply return "none" as well
+        // even though a transform value is set to the style attribute.
+        //
+        // To circumvent this behaviour we temporarily make the element visible to calculate the
+        // transform value and afterwards set back the original display style value.
+        if (originalDisplayValue === "none") {
+            this.el.style.display = "block";
+            const computedTransform = window.getComputedStyle(this.el)[css3d.transform];
+            this.el.style.display = originalDisplayValue;
+            return computedTransform;
+        } else {
+            return computedStyles[css3d.transform];
+        }
     },
 
     getMatrix: function() {
